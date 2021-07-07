@@ -1,0 +1,59 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eval in js</title>
+</head>
+<body>
+    <script>
+/// <summary>
+/// an tiny arithmetic-operation function by QQ:20437023 liaisonme@hotmail.com
+///
+/// 一个四则运算函数,支持运算符优先级 仅 21 行代码, 
+/// 实现了:
+///     加法(+),
+///     减法(-),
+///     乘法(*),
+///     除法(/),
+///     取余(%),
+/// 
+/// an arithmetic-operation function,support PRI., only 22 lines of code,
+/// Implement features:
+///     addition      (+),
+///     subduction    (-),
+///     multiplication(*),
+//      division      (/),
+//      remainder     (%)
+/// </summary>
+function Eval(express){
+    while (true) {
+        var lb = express.lastIndexOf('(');
+        if (lb == -1) break;
+        var rb = express.indexOf(')', lb);
+        if (-1 == rb) throw "Symbol is not match!";
+        express = express.substring(0, lb) + Eval(express.substring(1 + lb, rb - lb)) + express.substring(rb + 1);
+    }
+    if(/^(-?\d+)(\.\d+)?$/.test(express))return parseFloat(express);
+    var op = express.indexOf('+');
+    if (-1 != op) return Eval(express.substring(0, op)) + Eval(express.substring(1 + op));
+    op = express.indexOf('-');
+    if (-1 != op) return Eval(express.substring(0, op)) - Eval(express.substring(1 + op));
+    op = express.indexOf('%');
+    if (-1 != op) return Eval(express.substring(0, op)) % Eval(express.substring(1 + op));
+    op = express.indexOf('*');
+    if (-1 != op) return Eval(express.substring(0, op)) * Eval(express.substring(1 + op));
+    op = express.indexOf('/');
+    if (-1 != op) return Eval(express.substring(0, op)) / Eval(express.substring(1 + op));
+    throw "Unknow error!";
+}
+var express="(1+2*3)*3%20";
+var jsRet=eval(express);
+var myRet=Eval(express);
+console.log(jsRet,myRet,jsRet==myRet);
+    </script>
+</body>
+</html>
